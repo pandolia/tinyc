@@ -1,0 +1,25 @@
+FUNC @main:
+    main.var a
+
+    push 3
+    pop a
+
+    push 4
+    push a
+    $sum
+    print "sum = %d"
+
+    ret 0
+ENDFUNC@main
+
+FUNC @sum:
+    sum.arg a, b
+    sum.var c
+
+    push a
+    push b
+    add
+    pop c
+
+    ret c
+ENDFUNC@sum

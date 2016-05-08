@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+if [ $# != 1 ];
+then
+    echo "Usage: $0 <filename>"
+    exit 1
+fi
+
+if ! [ -f $1 ];
+then
+    echo "Error: File $1 does NOT exists."
+    exit 1
+fi
+
+tccdir=$(dirname $0)
+filename=${1%.*}
+fileext=${1##*.}
+objdir=$filename-$fileext-build
+
+"$(dirname $0)/tcc-frontend" $1
+nasm -f elf32 -P"$tccdir/macro.inc" -P"$filename.inc" -o "$filename.o" "$filename.asm"
+ld -m elf_i386 -o "$filename" "$filename.o" -L"$tccdir" -ltio
+mkdir -p "$objdir"
+mv "$filename.asm" "$filename.inc" "$filename.o" "$filename" "$objdir/"

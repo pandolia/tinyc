@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+if [[ ($# != 1) && ($# != 2) ]];
+then
+    echo "Usage: $0 <filename> [-da]"
+    exit 1
+fi
+
+if ! [ -f $1 ];
+then
+    echo "Error: File $1 does NOT exists."
+    exit 1
+fi
+
+python "$(dirname $0)/pysim.py" $1 $2

@@ -1,0 +1,37 @@
+; int main() { 
+FUNC @main:
+    ; int a;
+    main.var a
+
+    ; a = 3;
+    push 3
+    pop a
+
+    ; print("sum = %d", sum(4, a));
+    push 4
+    push a
+    $sum
+    print "sum = %d"
+
+    ; return 0;
+    ret 0
+; }
+ENDFUNC@main
+
+; int sum(int a, int b) {
+FUNC @sum:
+    sum.arg a, b
+
+    ; int c;
+    sum.var c
+
+    ; c = a + b;
+    push a
+    push b
+    add
+    pop c
+
+    ; return c;
+    ret c
+; }
+ENDFUNC@sum

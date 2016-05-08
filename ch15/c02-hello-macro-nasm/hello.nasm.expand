@@ -1,0 +1,31 @@
+[global _start]
+
+[SECTION .TEXT]
+_start:
+
+; print "Hello world!"
+[SECTION .DATA]
+    ..@1.STRING: DB "Hello world!", 10
+    ..@1.LEN: EQU $-..@1.STRING
+[SECTION .TEXT]
+    MOV EAX, 4
+    MOV EBX, 1
+    MOV ECX, ..@1.STRING
+    MOV EDX, ..@1.LEN
+    INT 0x80
+
+; print "Hello again" 
+[SECTION .DATA]
+    ..@2.STRING: DB "Hello again!", 10
+    ..@2.LEN: EQU $-..@2.STRING
+[SECTION .TEXT]
+    MOV EAX, 4
+    MOV EBX, 1
+    MOV ECX, ..@2.STRING
+    MOV EDX, ..@2.LEN
+    INT 0x80
+
+; exit 0
+MOV EAX, 1
+MOV EBX, 0
+INT 0x80

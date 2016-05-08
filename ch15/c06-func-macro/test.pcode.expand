@@ -1,0 +1,13 @@
+@sum:
+    PUSH EBP
+    MOV EBP, ESP
+    SUB ESP, 4*1
+
+    PUSH DWORD [EBP + 12]   ; push a
+    PUSH DWORD  [EBP + 8]   ; push b
+    add
+    POP DWORD [EBP - 4*1]   ; pop c
+
+    MOV EAX, [EBP - 4*1]    ; MOV EAX, c
+    LEAVE
+    RET
