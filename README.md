@@ -1,1 +1,1 @@
-http://pandolia.net/tinyc
+https://pandolia.net/tinyc/
