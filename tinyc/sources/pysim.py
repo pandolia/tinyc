@@ -1,5 +1,7 @@
 import os, sys
 
+PY3 = sys.version_info[0] == 3
+
 comment_mark = ";%"
 code = []
 stack = []
@@ -22,8 +24,8 @@ def is_valid_identifier(ident):
 
 def assemb_error(line, msg):
 	display(pause=False)
-	print line
-	print "^^^Error at last line: %s" % msg
+	print(line)
+	print("^^^Error at last line: %s" % msg)
 	exit(-1)
 
 def run_error(msg="Wrong instruction format"):
@@ -32,13 +34,31 @@ def run_error(msg="Wrong instruction format"):
 	display(pause=False)
 	exit(-1)
 
+def read_file(filename):
+	if PY3:
+		return open(filename, 'r').readlines()
+	
+	return file(filename).readlines()
+
+def get_input(msg):
+	if PY3:
+		return input(msg)
+	
+	return raw_input(msg)
+
+def table_has_key(table, key):
+	if PY3:
+		return key in table
+	
+	return table.has_key(key)
+		
 def assemb(asmfilename):
 	if len(sys.argv) > 2 and (sys.argv[2] == '-a' or sys.argv[2] == '-da'):
 		code.append(('', '$main', ''))
 		code.append(('', 'exit', '~'))
 
 	label = ""
-	for line in file(asmfilename):
+	for line in read_file(asmfilename):
 		line = line.strip()
 		if line == "" or line[0] in comment_mark:
 			continue
@@ -78,15 +98,15 @@ def check_label(label):
 	if sep:
 		if func.strip() != 'FUNC' \
 			or not is_valid_identifier(funcName) \
-			or func_table.has_key(funcName):
+			or table_has_key(func_table, funcName):
 			return False
 		else:
 			func_table[funcName] = len(code)
 			return True
 	else:
 		if not is_valid_identifier(label) \
-			or func_table.has_key(label) \
-			or label_table.has_key(label):
+			or table_has_key(func_table, label) \
+			or table_has_key(label_table, label):
 			return False
 		else:
 			label_table[label] = len(code)
@@ -98,7 +118,7 @@ def trim(s, size):
 def display(pause=True):
 	num_code_lines, num_terminal_lines = 24, 8
 	if os.system("clear"): os.system('cls')
-	print "%32s%-40s|  %-13s|Bind var" % ("", "Code", "Stack")
+	print("%32s%-40s|  %-13s|Bind var" % ("", "Code", "Stack"))
 	j = 0
 	for i in range( \
 		max(eip+1-num_code_lines, 0), max(eip+1, num_code_lines) ):
@@ -116,22 +136,22 @@ def display(pause=True):
 		stvar = var_table.get(j, "")
 		if j == len(stack) - 1: stvar += "<-"
 		
-		print "%29s%3s%-40s|  %-13s|%s" % \
-			(label, point, line, st, stvar)
+		print("%29s%3s%-40s|  %-13s|%s" % \
+			(label, point, line, st, stvar))
 
 		j += 1
 
-	print "***Terminal***"
+	print("***Terminal***")
 	n = len(printout)
 	for i in range( \
 		max(n-num_terminal_lines, 0), max(n, num_terminal_lines) ):
-		print printout[i] if i < n else ""
+		print(printout[i] if i < n else "")
 		if i == n and not pause:
 			break
 
 	if pause:
 		global debug
-		if raw_input("\npress enter to step, -r to run.") == "-r":
+		if get_input("\npress enter to step, -r to run.") == "-r":
 			debug = False
 
 def run():
@@ -160,7 +180,7 @@ def do_var(arg):
 	if arg == "": return
 	for var in arg.split(','):
 		var = var.strip()
-		if not is_valid_identifier(var) or var_table.has_key(var):
+		if not is_valid_identifier(var) or table_has_key(var_table, var):
 			run_error("Wrong var name")
 		var_table[var] = len(stack)
 		var_table[len(stack)] = var
@@ -235,7 +255,7 @@ def do_print(fmt):
 		run_error("Format string error")
 	argc = fmt.count("%d")
 	out = fmt[1:-1] % tuple(stack[len(stack)-argc:])
-	print out
+	print(out)
 	printout.append(out)
 	del stack[len(stack)-argc:]
 
@@ -244,7 +264,7 @@ def do_readint(msg):
 		run_error("Message string error")
 	msg = msg.strip('"').strip("'")
 	if debug: display(pause=False)
-	string = raw_input(msg)
+	string = get_input(msg)
 	try:
 		value = int(string)
 	except ValueError:
@@ -288,7 +308,7 @@ def call(funcName):
 	new_var_table = {}
 	for addr, arg  in enumerate(arg_list, len(stack)-len(arg_list)):		
 		arg = arg.strip()
-		if not is_valid_identifier(arg) or new_var_table.has_key(arg):
+		if not is_valid_identifier(arg) or table_has_key(new_var_table, arg):
 			run_error("Wrong arg name")
 
 		new_var_table[arg] = addr
