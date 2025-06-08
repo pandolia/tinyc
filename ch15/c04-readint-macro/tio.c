@@ -109,6 +109,8 @@ int STRLEN(char *s) {
 }
 
 int SYS_READ(char *buf, int len) {
+    /* 2025-06-08 Thank Freed-Wu(https://github.com/Freed-Wu) for pointing out an error in
+     * "MOV EBX, 2", 2 means stderr, should be 0 for stdin */
     __asm__(
     ".intel_syntax noprefix\n\
         PUSH EBX\n\
@@ -116,7 +118,7 @@ int SYS_READ(char *buf, int len) {
         PUSH EDX\n\
         \n\
         MOV EAX, 3\n\
-        MOV EBX, 2\n\
+        MOV EBX, 0\n\
         MOV ECX, [EBP+4*2]\n\
         MOV EDX, [EBP+4*3]\n\
         INT 0X80\n\
