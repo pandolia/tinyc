@@ -1,7 +1,7 @@
 %MACRO print 1
-    [SECTION .DATA]
+    [SECTION .data]
         %%STRING:   DB %1, 10, 0
-    [SECTION .TEXT]
+    [SECTION .text]
         PUSH DWORD %%STRING
         CALL PRINT
         SHL EAX, 2
@@ -9,9 +9,9 @@
 %ENDMACRO
 
 %MACRO readint 1
-    [SECTION .DATA]
+    [SECTION .data]
         %%STRING:   DB %1, 0
-    [SECTION .TEXT]
+    [SECTION .text]
         PUSH DWORD %%STRING
         CALL READINT
         MOV [ESP], EAX
@@ -26,5 +26,5 @@
 EXTERN PRINT, READINT
 GLOBAL _start
 
-[SECTION .TEXT]
+[SECTION .text]
 _start:

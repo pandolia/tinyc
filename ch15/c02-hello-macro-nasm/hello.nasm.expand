@@ -1,13 +1,13 @@
 [global _start]
 
-[SECTION .TEXT]
+[SECTION .text]
 _start:
 
 ; print "Hello world!"
-[SECTION .DATA]
+[SECTION .data]
     ..@1.STRING: DB "Hello world!", 10
     ..@1.LEN: EQU $-..@1.STRING
-[SECTION .TEXT]
+[SECTION .text]
     MOV EAX, 4
     MOV EBX, 1
     MOV ECX, ..@1.STRING
@@ -15,10 +15,10 @@ _start:
     INT 0x80
 
 ; print "Hello again" 
-[SECTION .DATA]
+[SECTION .data]
     ..@2.STRING: DB "Hello again!", 10
     ..@2.LEN: EQU $-..@2.STRING
-[SECTION .TEXT]
+[SECTION .text]
     MOV EAX, 4
     MOV EBX, 1
     MOV ECX, ..@2.STRING

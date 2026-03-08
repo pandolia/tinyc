@@ -1,6 +1,6 @@
 GLOBAL _start
 
-[SECTION .TEXT]
+[SECTION .text]
 _start:
     MOV EAX, 4          ; write
     MOV EBX, 1          ; stdout
@@ -12,6 +12,6 @@ _start:
     MOV EBX, 0
     INT 0x80            ; exit(0)
 
-[SECTION .DATA]
+[SECTION .data]
     msg: DB  "Hello, world!", 10
     len: EQU $-msg

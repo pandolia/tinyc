@@ -1,8 +1,8 @@
 %MACRO print 1
-    [SECTION .DATA]
+    [SECTION .data]
         %%STRING:   DB %1, 10
         %%LEN:      EQU $-%%STRING
-    [SECTION .TEXT]
+    [SECTION .text]
         MOV EAX, 4          ; write
         MOV EBX, 1          ; stdout
         MOV ECX, %%STRING
@@ -18,5 +18,5 @@
 
 GLOBAL _start
 
-[SECTION .TEXT]
+[SECTION .text]
 _start:

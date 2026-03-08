@@ -5,6 +5,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+extern int yylex(void);
+void yyerror(const char* msg);
+
 void init_parser(int argc, char *argv[]);
 void quit_parser();
 
