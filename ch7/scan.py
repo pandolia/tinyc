@@ -96,8 +96,8 @@ def scan(s):
             
                     
 if __name__ == "__main__":
-    print "%-20s%s" % ("TOKEN TYPE", "TOKEN VALUE")
-    print "-" * 50
-    for line in file("scan.py"):
+    print("%-20s%s" % ("TOKEN TYPE", "TOKEN VALUE"))
+    print("-" * 50)
+    for line in open("scan.py"):
         for token in scan(line):
-            print token
+            print(token)
